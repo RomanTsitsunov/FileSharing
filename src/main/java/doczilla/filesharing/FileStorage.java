@@ -12,9 +12,13 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 
 public class FileStorage {
     private static final Map<String, FileStatistic> files = new HashMap<>();
+    private static final ScheduledExecutorService scheduledExecutorService = Executors.newSingleThreadScheduledExecutor();
 
     static {
         File folder = new File("src/main/resources/files");
@@ -30,6 +34,29 @@ public class FileStorage {
             }
             FileStatistic fileStatistic = new FileStatistic(id, name, size, uploadDate);
             files.put(String.valueOf(id), fileStatistic);
+        }
+
+        // Вызывает метод по удалению просроченных файлов раз в день
+        scheduledExecutorService.scheduleWithFixedDelay(FileStorage::deleteOverdueFiles, Long.parseLong(AppProperties.get("deleteOverdueFiles.scheduled_days")),
+                Long.parseLong(AppProperties.get("deleteOverdueFiles.scheduled_days")), TimeUnit.DAYS);
+    }
+
+    /**
+     * Удаляет файлы, которые скачивались последний раз OVERDUE_DAYS дней назад или более
+     */
+    public static void deleteOverdueFiles() {
+        Collection<FileStatistic> fileStatistics = getAllFileStatistics();
+        for (FileStatistic fileStatistic : fileStatistics) {
+            Date lastDownloadDate = fileStatistic.getLastDownloadDate();
+            long dayDiff = (new Date().getTime() - lastDownloadDate.getTime()) / 1000 / 60 / 60 / 24;
+            if (dayDiff >= Long.parseLong(AppProperties.get("overdue_file.days"))) {
+                try {
+                    Files.delete(Path.of(AppProperties.get("files_path") + fileStatistic.getName()));
+                    files.remove(String.valueOf(fileStatistic.getId()));
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+            }
         }
     }
 
