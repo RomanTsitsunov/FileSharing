@@ -22,6 +22,13 @@ public class FileStorage {
 
     static {
         File folder = new File("src/main/resources/files");
+        if (!folder.exists()) {
+            try {
+                Files.createDirectory(folder.toPath());
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        }
         for (File file : folder.listFiles()) {
             UUID id = UUID.randomUUID();
             String name = file.getName();
