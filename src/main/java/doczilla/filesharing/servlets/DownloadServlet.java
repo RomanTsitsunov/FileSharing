@@ -17,7 +17,7 @@ public class DownloadServlet extends HttpServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         String path = req.getPathInfo();
         String uuid = path.substring(1);
-        File file = FileStorage.getFileById(uuid);
+        File file = FileStorage.downloadFile(uuid);
         String fileName = file.getName();
         String encoded = URLEncoder.encode(fileName, StandardCharsets.UTF_8).replaceAll("\\+", "%20");
         String contentDisposition = String.format("attachment; filename=\"%s\"; filename*=UTF-8''%s", fileName, encoded);

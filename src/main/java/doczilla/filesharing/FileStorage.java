@@ -22,7 +22,7 @@ public class FileStorage {
             UUID id = UUID.randomUUID();
             String name = file.getName();
             long size = file.length();
-            Date uploadDate = null;
+            Date uploadDate;
             try {
                 uploadDate = Date.from(((FileTime) Files.getAttribute(file.toPath(), "creationTime")).toInstant());
             } catch (IOException e) {
@@ -37,8 +37,19 @@ public class FileStorage {
      * @param uuid id файла
      * @return файл по его id
      */
-    public static File getFileById(String uuid) {
+    public static File downloadFile(String uuid) {
+        updateDownloadDate(uuid);
+        incrementDownloadCount(uuid);
         return new File(AppProperties.get("files_path") + files.get(uuid).getName());
+    }
+
+    private static void updateDownloadDate(String uuid) {
+        files.get(uuid).setLastDownloadDate(new Date());
+    }
+
+    private static void incrementDownloadCount(String uuid) {
+        FileStatistic fileStatistic = files.get(uuid);
+        fileStatistic.setDownloadCount(fileStatistic.getDownloadCount() + 1);
     }
 
     /**

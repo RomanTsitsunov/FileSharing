@@ -92,12 +92,15 @@ async function loadFiles() {
 }
 
 function updateListItem(listItem, file) {
+    const lastDownloadDate = file.lastDownloadDate === null ? '' : new Date(file.lastDownloadDate)
     listItem.innerHTML = `
         <div>
             <span>Информация о файле:</span></br>
             <span>Имя: ${file.name}</span></br>
             <span>Размер: ${file.size} byte</span></br>
             <span>Дата загрузки: ${new Date(file.uploadDate)}</span></br>
+            <span>Дата последнего скачивания: ${lastDownloadDate}</span></br>
+            <span>Количество скачиваний: ${file.downloadCount}</span></br>
             <a href="${file.downloadLink}">Скачать</a>
         </div>
     `;
@@ -106,14 +109,27 @@ function updateListItem(listItem, file) {
 function createListItem(file) {
     const listItem = document.createElement('li');
     listItem.id = file.name;
+    const lastDownloadDate = file.lastDownloadDate === null ? '' : new Date(file.lastDownloadDate);
+    let downloadCount = file.downloadCount;
     listItem.innerHTML = `
         <div>
             <span>Информация о файле:</span></br>
             <span>Имя: ${file.name}</span></br>
             <span>Размер: ${file.size} byte</span></br>
             <span>Дата загрузки: ${new Date(file.uploadDate)}</span></br>
-            <a href="${file.downloadLink}">Скачать</a>
+            <span class="lastDownloadDate">Дата последнего скачивания: ${lastDownloadDate}</span><br>
+            <span class="downloadCount">Количество скачиваний: ${downloadCount}</span><br>
+            <a class="downloadLink" href="${file.downloadLink}">Скачать</a>
         </div>
     `;
+
+    listItem.querySelector('.downloadLink').addEventListener('click', async (event) => {
+            setTimeout(() => {
+                downloadCount += 1;
+                listItem.querySelector('.lastDownloadDate').textContent = `Дата последнего скачивания: ${new Date()}`;
+                listItem.querySelector('.downloadCount').textContent = `Количество скачиваний: ${downloadCount}`;
+            }, 200);
+        });
+
     return listItem;
 }
