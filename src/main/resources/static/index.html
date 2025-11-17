@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+
+<div id="authorizationDiv">
+    <p id="authorizationInfo">Не авторизован</p>
+    <form id="authorizationForm">
+        <label for="loginInput">Логин:</label>
+        <input id="loginInput" type="text">
+        </br>
+        <label for="passInput">Пароль:</label>
+        <input id="passInput" type="text">
+        </br>
+        <button type="submit">Войти</button>
+    </form>
+    <button id="logoutButton" hidden="hidden">Выйти</button>
+</div>
+
+<form id="fileUploadForm">
+    <input id="fileInput" type="file">
+    </br>
+    <button type="submit">Загрузить</button>
+    </br>
+    <div id="progressContainer" hidden="hidden">
+        <progress id='progressBar' value='0' max='100'></progress>
+        <span id='progressStatus'>0%</span>
+    </div>
+</form>
+
+<ul id="filesList"></ul>
+
+<script src="fileUpload.js"></script>
+</body>
+</html>
