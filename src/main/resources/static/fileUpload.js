@@ -94,13 +94,25 @@ async function loadFiles() {
 function updateListItem(listItem, file) {
     const lastDownloadDate = file.lastDownloadDate === null ? '' : new Date(file.lastDownloadDate)
     listItem.innerHTML = `
-        <div>
-            <span>Информация о файле:</span></br>
-            <span>Имя: ${file.name}</span></br>
-            <span>Размер: ${file.size} byte</span></br>
-            <span>Дата загрузки: ${new Date(file.uploadDate)}</span></br>
-            <span>Дата последнего скачивания: ${lastDownloadDate}</span></br>
-            <span>Количество скачиваний: ${file.downloadCount}</span></br>
+        <div id="fileItem">
+            <span>
+            <b>Информация о файле:</b>
+            </span></br>
+            <span>
+            <b>Имя:</b> ${file.name}
+            </span></br>
+            <span>
+            <b>Размер:</b> ${file.size} byte
+            </span></br>
+            <span>
+            <b>Дата загрузки:</b> ${new Date(file.uploadDate)}
+            </span></br>
+            <span>
+            <b>Дата последнего скачивания:</b> ${lastDownloadDate}
+            </span></br>
+            <span>
+            <b>Количество скачиваний:</b> ${file.downloadCount}
+            </span></br>
             <a href="${file.downloadLink}">Скачать</a>
         </div>
     `;
@@ -113,12 +125,24 @@ function createListItem(file) {
     let downloadCount = file.downloadCount;
     listItem.innerHTML = `
         <div>
-            <span>Информация о файле:</span></br>
-            <span>Имя: ${file.name}</span></br>
-            <span>Размер: ${file.size} byte</span></br>
-            <span>Дата загрузки: ${new Date(file.uploadDate)}</span></br>
-            <span class="lastDownloadDate">Дата последнего скачивания: ${lastDownloadDate}</span><br>
-            <span class="downloadCount">Количество скачиваний: ${downloadCount}</span><br>
+            <span>
+            <b>Информация о файле:</b>
+            </span></br>
+            <span>
+            <b>Имя:</b> ${file.name}
+            </span></br>
+            <span>
+            <b>Размер:</b> ${file.size} byte
+            </span></br>
+            <span>
+            <b>Дата загрузки:</b> ${new Date(file.uploadDate)}
+            </span></br>
+            <span class="lastDownloadDate">
+            <b>Дата последнего скачивания:</b> ${lastDownloadDate}
+            </span><br>
+            <span class="downloadCount">
+            <b>Количество скачиваний:</b> ${downloadCount}
+            </span><br>
             <a class="downloadLink" href="${file.downloadLink}">Скачать</a>
         </div>
     `;
@@ -126,8 +150,8 @@ function createListItem(file) {
     listItem.querySelector('.downloadLink').addEventListener('click', async (event) => {
             setTimeout(() => {
                 downloadCount += 1;
-                listItem.querySelector('.lastDownloadDate').textContent = `Дата последнего скачивания: ${new Date()}`;
-                listItem.querySelector('.downloadCount').textContent = `Количество скачиваний: ${downloadCount}`;
+                listItem.querySelector('.lastDownloadDate').innerHTML = `<b>Дата последнего скачивания:</b> ${new Date()}`;
+                listItem.querySelector('.downloadCount').innerHTML = `<b>Количество скачиваний:</b> ${downloadCount}`;
             }, 200);
         });
 

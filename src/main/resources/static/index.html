@@ -11,12 +11,14 @@
 <div id="authorizationDiv">
     <p id="authorizationInfo">Не авторизован</p>
     <form id="authorizationForm">
-        <label for="loginInput">Логин:</label>
-        <input id="loginInput" type="text">
-        </br>
-        <label for="passInput">Пароль:</label>
-        <input id="passInput" type="text">
-        </br>
+        <div class="form-row">
+            <label for="loginInput">Логин:</label>
+            <input id="loginInput" type="text">
+        </div>
+        <div class="form-row">
+            <label for="passInput">Пароль:</label>
+            <input id="passInput" type="text">
+        </div>
         <button type="submit">Войти</button>
     </form>
     <button id="logoutButton" hidden="hidden">Выйти</button>
@@ -33,7 +35,10 @@
     </div>
 </form>
 
-<ul id="filesList"></ul>
+<div id="filesDiv">
+    <h3>Список файлов</h3>
+    <ul id="filesList"></ul>
+</div>
 
 <script src="fileUpload.js"></script>
 </body>
